@@ -18,3 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'master'], function () {
+    Route::get('/master-data', 'MasterDashboardController@index')->name('master.dashboard');
+    Route::get('/transaction', 'TransactionController@index')->name('transaction.index');
+    Route::resource('/user', 'UserController');
+    Route::resource('/member', 'MemberController');
+    Route::resource('/role', 'RolesController');
+   
+});
+Route::resource('reports', 'ReportsController');

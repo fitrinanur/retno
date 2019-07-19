@@ -21,7 +21,9 @@ class CreateTransactionsTable extends Migration
             $table->string('catatan');
             $table->integer('extra');
             $table->integer('total');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
+
         });
     }
 

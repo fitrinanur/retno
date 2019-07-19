@@ -31,3 +31,16 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'master'], function (
    
 });
 Route::resource('reports', 'ReportsController');
+Route::get('/ajax-subcat/{members}/members.json', function($members) {
+    // dd($members);
+    return App\Member::where('id', $members)->first();
+});
+Route::get('/ajax-subcat-treatment/{treatments}/treatments.json', function($treatments) {
+    // dd($members);
+    return App\Treatment::where('id', $treatments)->first();
+});
+Route::get('/ajax-subcat-treatment2/{treatments}/treatments2.json', function($treatments) {
+    // dd($members);
+    return App\Treatment::where('id', $treatments)->first();
+});
+  

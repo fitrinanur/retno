@@ -3,22 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Treatment;
 
-class TransactionController extends Controller
+class TreatmentController extends Controller
 {
-
-    // public function __construct()
-    // {
-    //     $this->middleware ='auth';
-    // }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view('transaction.index');
+        $treatments = Treatment::all();
+        return view('treatments.index',compact('treatments'));
     }
 
     /**
@@ -28,7 +20,8 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        return view('transaction.create');
+        $types = $this->types();
+        return view('treatments.create', compact('types'));
     }
 
     /**
@@ -39,7 +32,13 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $treatment = new \App\Treatment();
+        $treatment->name = $request->name;
+        $treatment->category = $request->category;
+        $treatment->price = $request->price;
+        $treatment->save();
+
+        return redirect()->route('treatment.index');
     }
 
     /**
@@ -61,7 +60,9 @@ class TransactionController extends Controller
      */
     public function edit($id)
     {
-        return view('transaction.edit');
+        $treatment = Treatment::find($id);
+        $types = $this->types();
+        return view('treatments.edit',compact('treatment','types'));
     }
 
     /**
@@ -73,7 +74,13 @@ class TransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $treatment = Treatment::findOrFail($id);
+        $treatment->name = $request->name;
+        $treatment->category = $request->name;
+        $treatment->price = $request->price;
+        $treatment->update();
+
+        return redirect()->route('treatment.index');
     }
 
     /**
@@ -84,6 +91,20 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $treatment = Treatment::findOrFail($id);
+        $treatment->delete();
+
+        return redirect()->route('treatment.index');
+    }
+
+    public function types()
+    {
+        return $types =
+        [
+            '1' => 'face',
+            '2' => 'body',
+            '3' => 'hair',
+            '4' => 'special'
+        ];
     }
 }

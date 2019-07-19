@@ -50,7 +50,9 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('user.index') }}">Data User</a>
-                            <a class="dropdown-item" href="{{ route('member.index') }}">Data Member</a>
+                                <a class="dropdown-item" href="{{ route('member.index') }}">Data Member</a>
+                                <a class="dropdown-item" href="{{ route('treatment.index') }}">Data Treatment</a>
+                                <a class="dropdown-item" href="{{ route('transaction.index') }}">Data Transaksi</a>
                             </div>
                         </li>
                     </ul>

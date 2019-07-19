@@ -20,10 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'master'], function () {
     Route::get('/master-data', 'MasterDashboardController@index')->name('master.dashboard');
-    Route::get('/transaction', 'TransactionController@index')->name('transaction.index');
+    Route::resource('/transaction', 'TransactionController');
+    Route::get('/transaction/import', 'TransactionController@import');
+    Route::post('/transaction/import', 'TransactionController@doImport');
+    Route::get('/transaction/export', 'TransactionController@export');
     Route::resource('/user', 'UserController');
     Route::resource('/member', 'MemberController');
     Route::resource('/role', 'RolesController');
+    Route::resource('/treatment', 'TreatmentController');
    
 });
 Route::resource('reports', 'ReportsController');

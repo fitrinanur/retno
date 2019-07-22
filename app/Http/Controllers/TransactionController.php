@@ -7,7 +7,13 @@ use App\Transaction;
 use App\User;
 use App\Member;
 use App\Treatment;
+use App\Rule;
+use App\Frequent;
 use Carbon\Carbon;
+use App\Http\Imports\TransactionImports;
+use App\Exports\TransactionReports;
+use Excel;
+use PDF;
 
 class TransactionController extends Controller
 {
@@ -53,47 +59,130 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
-        if($request->type == 'member'){
-            $transaction = new \App\Transaction();
-            $transaction->transaction_code = $request->code;
-            $transaction->user_id = $request->user;
-            $transaction->member_id = $request->member_id;
-            $transaction->treatment_id = $request->category;
-            $transaction->catatan = $request->notes;
-            $transaction->extra = $request->extra;
-            $transaction->total = $request->total;
-            $transaction->save();
-        }else{
-            // dd($request->all());
-            $date = Carbon::now()->format('Ymd');
-            $uniqid = strtoupper(substr(uniqid(), -5));
-            $code = $date.$uniqid;
+       
+        $treatments = Treatment::whereIn('id', $request->category)->get();
+        // dd($treatments);
+        foreach($treatments as $treatment){
+            if($request->type == 'member'){
+                $transaction = new \App\Transaction();
+                $transaction->transaction_code = $request->code;
+                $transaction->user_id = $request->user;
+                $transaction->member_id = $request->member_id;
+                $transaction->member_name = $request->member_name;
+                $transaction->treatment_id = $treatment->id;
+                $transaction->code_treatment = $treatment->code_treatment;
+                $transaction->treatment_name = $treatment->name;
+                $transaction->catatan = $request->notes;
 
-            $transaction = new \App\Transaction();
-            $transaction->transaction_code = $request->code;
-            $transaction->user_id = $request->user;
-            $transaction->member_id = 0;
-            $transaction->treatment_id = $request->treatment_id;
-            $transaction->catatan = $request->notes;
-            $transaction->extra = $request->extra;
-            $transaction->total = $request->total;
-            $transaction->save();
-            $transaction->member()->create([
-                'name'           => $request->member_name,
-                'no_member'      => 'M'. $code,
-                // 'birthday'       => $request->birthday,
-                'phone_number'   => $request->phone_number,
-                'email'          => $request->email,
-                'address'        => $request->address,
-            ]);
-            // $transaction->member()->sync($transaction->member_id);
-            
-           
+                $transaction->extra = $request->extra;
+                
+                $transaction->total = $request->total;
+                $transaction->save();
+            }else{
+                // dd($request->all());
+                $date = Carbon::now()->format('Ymd');
+                $uniqid = strtoupper(substr(uniqid(), -5));
+                $code = $date.$uniqid;
 
-            return redirect()->route('transaction.index');
-
+                $transaction = new \App\Transaction();
+                $transaction->transaction_code = $request->code;
+                $transaction->user_id = $request->user;
+                $transaction->member_id = 0;
+                $transaction->member_name = 'UMUM';
+                $transaction->treatment_id = $treatment->id;
+                $transaction->code_treatment = $treatment->code_treatment;
+                $transaction->treatment_name = $treatment->name;
+                $transaction->catatan = $request->notes;
+                $transaction->extra = $request->extra;
+                $transaction->total = $request->total;
+                $transaction->save();
+                $transaction->member()->create([
+                    'name'           => $request->member_name,
+                    'no_member'      => 'M'. $code,
+                    // 'birthday'       => $request->birthday,
+                    'phone_number'   => $request->phone_number,
+                    'email'          => $request->email,
+                    'address'        => $request->address,
+                ]);
+            }
         }
         
+        return redirect()->route('transaction.index');
+        
+    }
+
+    public function getCategory()
+    {
+        $selectedNumbers = request()->get('selectednumbers');
+        $treatments = Treatment::whereIn('id',$selectedNumbers)->get();
+        $price =[];
+        $name = [];
+        $code = [];
+        foreach($treatments as $treatment){
+            $price[] = $treatment->price;
+            $code[]   = $treatment->code_treatment;
+            $name[]  = $treatment->name;
+        }
+        $treatment_price = array_sum($price);
+        
+        return ['price'=>$treatment_price,'code' => $code, 'name'=>$name]; 
+    }
+    public function getCategory2()
+    {
+        $selectedNumbers = request()->get('selectednumbers');
+        $treatments = Treatment::whereIn('id',$selectedNumbers)->get();
+        $price =[];
+        $name = [];
+        $code = [];
+        foreach($treatments as $treatment){
+            $price[] = $treatment->price;
+            $code[]   = $treatment->code_treatment;
+            $name[]  = $treatment->name;
+        }
+        $treatment_price = array_sum($price);
+        
+        return ['price'=>$treatment_price,'code' => $code, 'name'=>$name];
+    }
+
+    public function import()
+    {
+        return view('transaction-import');
+    }
+
+    public function doImport(TransactionImports $import)
+    {
+        $results = $import->get();
+        // Transaction::truncate();
+        Transaction::insert($results->toArray());
+        return redirect('transaction')->with('status', 'Import transaksi berhasil');
+    }
+
+    public function export(Request $request)
+    {
+        $transactions = Transaction::all();
+        $users = User::all();
+        $members = Member::all();
+        $rules = Rule::all();
+        $treatments = Treatment::all();
+        $date = Carbon::now()->format('Y-m-d');
+        $userGenerate = Auth()->user()->name;
+        if($request->type == 'transactions'){
+            $pdf = PDF::loadView('reports.transactions', compact('transactions','date','userGenerate'));
+            return $pdf->stream('Transaction Salon.pdf');
+        }elseif($request->type == 'users'){
+            $pdf = PDF::loadView('reports.users', compact('users','date','userGenerate'));
+            return $pdf->stream('Daftar User.pdf');
+        }elseif($request->type == 'members'){
+            $pdf = PDF::loadView('reports.members', compact('members','date','userGenerate'));
+            return $pdf->stream('Daftar Member.pdf');
+        }elseif($request->type == 'rules'){
+            $pdf = PDF::loadView('reports.rules', compact('rules','date','userGenerate'));
+            return $pdf->stream('Table Rules.pdf');
+        }else{
+            $pdf = PDF::loadView('reports.frequents', compact('frequents','date','userGenerate'));
+            return $pdf->stream('Table Frequent.pdf');
+        }
+       
     }
 
     /**
@@ -138,7 +227,10 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
+
+        return redirect()->route('transaction.index');
     }
 
     public function types()

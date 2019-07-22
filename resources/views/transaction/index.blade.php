@@ -1,4 +1,5 @@
-@extends('layouts.app')
+
+@extends('layouts.theme')
 
 @section('content')
 <div class="container">
@@ -8,9 +9,17 @@
                 <h3>Daftar Data Treatment</h3>
             </div>
             <div class="col-lg-6">
-                <a class="btn btn-sm btn-primary" style="float:right;" href="{{route('transaction.create')}}" > Tambah Data</a>
-                <a class="btn btn-sm btn-primary" style="float:right;margin-left:10px" href="{{url('transaction/import')}}" > Import Data</a>
-                <a class="btn btn-sm btn-success" style="float:right;" href="{{url('transaction/export')}}" > Export Data</a>
+                @if(Auth()->user()->name == "Admin")
+                <a class="btn btn-sm btn-primary" style="float:right;margin-left:10px" href="{{route('transaction.create')}}" > Tambah Data</a>
+                {{-- <a class="btn btn-sm btn-primary" style="float:right;margin-left:10px" href="{{url('master/transaction/import')}}" > Import Data</a> --}}
+                <form action="{{ url('master/transaction/export') }}" method="">
+                <button type="submit" name="type" value="transactions" class="btn btn-sm btn-success" style="float:right;" > Export Data</button>
+                </form>
+                @elseif(Auth()->user()->name == "Front Office")
+                {
+                    <a class="btn btn-sm btn-primary" style="float:right;margin-left:10px" href="{{route('transaction.create')}}" > Tambah Data</a>
+                }
+                @endif
             </div>
         </div>
     </div>

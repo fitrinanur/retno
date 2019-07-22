@@ -15,6 +15,7 @@ class CreateTreatmentsTable extends Migration
     {
         Schema::create('treatments', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('code_treatment');
             $table->string('name');
             $table->string('category');
             $table->integer('price');

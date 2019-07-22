@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nameInput">Member Name</label>
-                                    <input type="text" name="name" required
+                                    <input type="text" name="member_name" required
                                         class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}"
                                         id="member_name">
                                     @if ($errors->has('name'))
@@ -61,15 +61,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Treatment</label>
-                                    <select id="treatment_id" name="category" class="form-control">
-                                        <option selected> Pilih Treatment</option>
+                                    <select multiple="multiple" id="treatment_id" name="category[]"
+                                        class="form-control test">
                                         @foreach ($treatments as $key => $treatment)
                                         <option value="{{ $treatment->id }}" @if (old('treatment_id')==$treatment->id)
                                             selected @endif>{{ $treatment->name }}
+                                            {{'Rp' .number_format($treatment->price)}}
                                         </option>
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="nameInput">Harga</label>
                                     <input type="text" name="price" required
@@ -81,13 +83,35 @@
                                     </span>
                                     @endif
                                 </div>
+                                <div class="form-group">
+                                    <label for="nameInput">Nama Treatment</label>
+                                    <input type="text" name="treatment_name[]" required
+                                        class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                        id="treatment_name" readonly>
+                                    @if ($errors->has('price'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('price') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="nameInput">Treatment Code</label>
+                                    <input type="text" name="treatment_code[]" required
+                                        class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                        id="treatment_code" readonly>
+                                    @if ($errors->has('price'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('price') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
 
                                 <div class="form-group">
                                     <label for="nameInput">Biaya Tambahan<small></small></label>
                                     <input type="text" name="extra" required
                                         class="form-control {{ $errors->has('extra') ? ' is-invalid' : '' }}"
-                                        id="extra"> 
-                                        <small>* Isi dengan angka 0 jika tidak ada biaya tambahan</small>
+                                        id="extra">
+                                    <small>* Isi dengan angka 0 jika tidak ada biaya tambahan</small>
                                     @if ($errors->has('extra'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('extra') }}</strong>
@@ -169,11 +193,13 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="">Treatment</label>
-                                    <select id="treatment_id2" name="treatment_id" class="form-control">
-                                        <option selected> Pilih Treatment</option>
+                                    <br>
+                                    <select multiple="multiple" id="treatment_id2" name="category[]"
+                                        class="form-control test2">
                                         @foreach ($treatments as $key => $treatment)
-                                        <option value="{{ $treatment->id }}" @if (old('treatment_id2')==$treatment->id)
+                                        <option value="{{ $treatment->id }}" @if (old('treatment_id')==$treatment->id)
                                             selected @endif>{{ $treatment->name }}
+                                            {{'Rp' .number_format($treatment->price)}}
                                         </option>
                                         @endforeach
                                     </select>
@@ -182,7 +208,7 @@
                                     <label for="nameInput">Harga</label>
                                     <input type="text" name="price" required
                                         class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
-                                        id="treatment_price2">
+                                        id="treatment_price2" disabled>
                                     @if ($errors->has('price'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('price') }}</strong>
@@ -191,11 +217,33 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="nameInput">Nama Treatment</label>
+                                    <input type="text" name="treatment_name[]" required
+                                        class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                        id="treatment_name2" readonly>
+                                    @if ($errors->has('price'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('price') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
+                                    <label for="nameInput">Treatment Code</label>
+                                    <input type="text" name="treatment_code[]" required
+                                        class="form-control {{ $errors->has('price') ? ' is-invalid' : '' }}"
+                                        id="treatment_code2" readonly>
+                                    @if ($errors->has('price'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('price') }}</strong>
+                                    </span>
+                                    @endif
+                                </div>
+                                <div class="form-group">
                                     <label for="nameInput">Biaya Tambahan<small></small></label>
                                     <input type="text" name="extra" required
                                         class="form-control {{ $errors->has('extra') ? ' is-invalid' : '' }}"
-                                        id="extra2"> 
-                                        <small>* Isi dengan angka 0 jika tidak ada biaya tambahan</small>
+                                        id="extra2">
+                                    <small>* Isi dengan angka 0 jika tidak ada biaya tambahan</small>
                                     @if ($errors->has('extra'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('extra') }}</strong>
@@ -224,17 +272,13 @@
                                     </span>
                                     @endif
                                 </div>
-    
+
                                 <button type="submit" class="btn btn-primary mb-0">Kirim</button>
                             </form>
                         </div>
                     </div>
                     <!-- End tab content -->
                 </div>
-
-
-
-
             </div>
         </div>
     </div>
@@ -243,43 +287,80 @@
 </div>
 @endsection
 @push('scripts')
-<script type="text/javascript">
+<script type="application/javascript">
     $(document).ready(function () {
+        $('.test').select2();
+        $('.test2').select2();
         $('#member_id').change(function () {
             $.get('/ajax-subcat/' + this.value + '/members.json', function (members) {
                 $('#member_name').val(members.name);
             });
         });
         $('#treatment_id').change(function () {
-            $.get('/ajax-subcat-treatment/' + this.value + '/treatments.json', function (treatments) {
-                $('#treatment_price').val(treatments.price);
-            });
+            if ($('#treatment_id :selected').length > 0) {
+                var selectednumbers = [];
+                $('#treatment_id :selected').each(function (i, selected) {
+                    selectednumbers[i] = $(selected).val();
+                });
+                $.ajax({
+
+                    url: '{{ url('/ajax-subcat-treatment/treatments.json') }}',
+                    data: {
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                        'selectednumbers': selectednumbers
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        $('#treatment_name').val(data['name']);
+                        $('#treatment_code').val(data['code']);
+                        $('#treatment_price').val(data['price']);
+                    }
+                });
+            }
         });
         $('#treatment_id2').change(function () {
-            $.get('/ajax-subcat-treatment2/' + this.value + '/treatments2.json', function (treatments) {
-                $('#treatment_price2').val(treatments.price);
-            });
+            if ($('#treatment_id2 :selected').length > 0) {
+                var selectednumbers = [];
+                $('#treatment_id2 :selected').each(function (i, selected) {
+                    selectednumbers[i] = $(selected).val();
+                });
+                $.ajax({
+                    url: '{{ url('/ajax-subcat-treatment2/treatments2.json') }}',
+                    data: {
+                        "_token": $('meta[name="csrf-token"]').attr('content'),
+                        'selectednumbers': selectednumbers
+                    },
+                    type: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        $('#treatment_name2').val(data['name']);
+                        $('#treatment_code2').val(data['code']);
+                        $('#treatment_price2').val(data['price']);
+                    }
+                });
+            }
         });
 
         $('#extra').change(function () {
-            var price = $('#treatment_price').val();
+            var treatment_price = $('#treatment_price').val();
             var extra = $('#extra').val();
 
-            var total = Number(price)+Number(extra);
-            console.log(total);
-            $('#total').val(total);
+            var totals = Number(treatment_price) + Number(extra);
+            console.log(totals);
+            $('#total').val(totals);
         });
 
         $('#extra2').change(function () {
-            var price = $('#treatment_price2').val();
+            var treatment_price2 = $('#treatment_price2').val();
             var extra = $('#extra2').val();
 
-            var total = Number(price)+Number(extra);
-            console.log(total);
-            $('#total2').val(total);
+            var totals = Number(treatment_price2) + Number(extra);
+            console.log(totals);
+            $('#total2').val(totals);
         });
-     
-        
+
+
     });
 
 </script>

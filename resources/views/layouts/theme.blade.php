@@ -22,6 +22,7 @@
     <!-- Styles -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
 
 
     {{-- script --}}
@@ -58,7 +59,7 @@
                             <a class="nav-link" href="{{ route('home')}}">Home <span
                                     class="sr-only">(current)</span></a>
                         </li>
-                        <li class="nav-item dropdown">
+                        {{-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Data Master
@@ -70,17 +71,10 @@
                                 <a class="dropdown-item" href="{{ route('transaction.index') }}">Data Transaksi</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Apriori
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item"  href="{{ url('master/rule')}}">Rule <span
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ url('master/rule')}}">Rule <span
                                     class="sr-only">(current)</span></a>
-                                <a class="dropdown-item" href="{{ url('master/frequent') }}">Frequent</a>
-                            </div>
-                        </li>
+                        </li> --}}
                     </ul>
 
                     <!-- Right Side Of Navbar -->

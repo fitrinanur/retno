@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.theme')
 
 @section('content')
 <div class="container">
@@ -61,7 +61,44 @@
                         </div>
                         @endif
                     </div>
-
+                </div>
+            </div>
+            <br/>
+            <div class="card">
+                <div class="card-body">
+                <h6>Selamat Datang, <strong>{{Auth()->user()->name}}</strong></h6>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header" style="text-align:center">
+                                <small >Jumlah User</small>
+                            </div>
+                            <div class="card-body" style="text-align:center">
+                                <h3>{{$users->count()}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header" style="text-align:center">
+                                <small >Jumlah Member</small>
+                            </div>
+                            <div class="card-body" style="text-align:center">
+                                <h3>{{$members->count()}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header" style="text-align:center">
+                                <small >Jumlah Treatment</small>
+                            </div>
+                            <div class="card-body" style="text-align:center">
+                                <h3>{{$treatments->count()}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMembersTable extends Migration
+class CreateRuleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateMembersTable extends Migration
      */
     public function up()
     {
-        Schema::create('members', function (Blueprint $table) {
+        Schema::create('rule', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('no_member');
-            $table->string('birthday')->nullable();
-            $table->string('phone_number');
-            $table->string('email');
-            $table->string('address');
+            $table->text('antecedent');
+            $table->text('consequent');
+            $table->double('support');
+            $table->double('confidence');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateMembersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('members');
+        Schema::dropIfExists('rule');
     }
 }

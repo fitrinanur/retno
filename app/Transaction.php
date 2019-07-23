@@ -81,6 +81,10 @@ class Transaction extends Model
     {
         return $this->belongsTo(Member::class);
     }
+    public function umum()
+    {
+        return $this->belongsTo(Umum::class);
+    }
     public function treatment()
     {
         return $this->belongsTo(Treatment::class);

@@ -9,6 +9,7 @@ use App\Member;
 use App\Treatment;
 use App\Rule;
 use App\Frequent;
+use App\Umum;
 use Carbon\Carbon;
 use App\Http\Imports\TransactionImports;
 use App\Exports\TransactionReports;
@@ -96,9 +97,9 @@ class TransactionController extends Controller
                 $transaction->extra = $request->extra;
                 $transaction->total = $request->total;
                 $transaction->save();
-                $transaction->member()->create([
+                $transaction->umum()->create([
                     'name'           => $request->member_name,
-                    'no_member'      => 'M'. $code,
+                    // 'no_member'      => 'M'. $code,
                     // 'birthday'       => $request->birthday,
                     'phone_number'   => $request->phone_number,
                     'email'          => $request->email,

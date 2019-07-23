@@ -13,10 +13,12 @@
         <style>
             html, body {
                 background-color: #fff;
+                background-image: url("{{ asset('1.jpg') }}");
+                background-size: cover;
                 color: #636b6f;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
-                height: 100vh;
+                height: 100%;
                 margin: 0;
             }
 
@@ -47,6 +49,9 @@
             .title {
                 font-size: 84px;
             }
+            .skripsi-title {
+                font-size: 36px;
+            }
 
             .links > a {
                 color: #636b6f;
@@ -61,6 +66,14 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            
+            .wrapper-box {
+                background-color: #636b6f;
+                /* opacity:0.2; */
+                border-radius: 5px;
+                padding :10px;
+                color: #fff;
+            }
         </style>
     </head>
     <body>
@@ -72,27 +85,30 @@
                     @else
                         <a href="{{ route('login') }}">Login</a>
 
-                        @if (Route::has('register'))
+                        {{-- @if (Route::has('register'))
                             <a href="{{ route('register') }}">Register</a>
-                        @endif
+                        @endif --}}
                     @endauth
                 </div>
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+               <div class="wrapper-box">
+                   <div class="logo">
+                    <img src="{{asset('logo_sinus.png')}}" alt="logo"/ style="height:150px;width:150px">
+                   </div>
+                   <div class="information">
+                    <div class="skripsi-title">Sistem Rekomendasi Treatment Retno Salon</div>
+                    <hr>
+                    <div class="info-data">
+                         <p>Disusun Oleh :</p>
+                         <h3>Latifah Landari</h3>
+                         <p>Teknologi Informatika S1 - 13.5.00084</p>
+                    </div>
                 </div>
+               </div>
+             
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
             </div>
         </div>
     </body>

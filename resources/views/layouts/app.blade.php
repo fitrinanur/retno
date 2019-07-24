@@ -81,6 +81,10 @@
                                 <a class="dropdown-item" href="{{ url('master/frequent') }}">Frequent</a>
                             </div>
                         </li>
+                        <li class="nav-item active">
+                                <a class="nav-link" href="{{ url('master/simulasi')}}">Simulasi <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
